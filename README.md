@@ -72,7 +72,7 @@ The model was trained for 100 epochs using the Adam optimizer with MSE loss on r
 
 Ignition-Net is approximately **1000× faster** than Cantera across the full parameter sweep. Cantera requires ~1000–1200 ms per call; the surrogate completes inference in under 1 ms.
 
-![Inference Speed](src/speed.png)
+![Inference Speed](speed.png)
 
 The green shaded region shows the speedup margin between the two methods across 15,625 input conditions. The surrogate line (blue, dashed) is nearly indistinguishable from zero on this scale.
 
@@ -80,7 +80,7 @@ The green shaded region shows the speedup margin between the two methods across 
 
 The surrogate achieves a **median absolute error of 21.73 K** against Cantera ground truth across the full parameter sweep.
 
-![Prediction Error](src/error.png)
+![Prediction Error](error.png)
 
 Error is largest at extreme equivalence ratios (very lean or very rich), where the AFT surface has the steepest gradients. The bulk of predictions fall within ±20 K of the Cantera solution.
 

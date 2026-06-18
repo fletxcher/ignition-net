@@ -2,9 +2,9 @@ import torch
 import numpy as np
 import cantera as ct
 import torch.nn as nn
+from typing import List, Self
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
-from typing import List, Self, Tuple, Callable
 from torchmetrics import R2Score, MeanSquaredError, NormalizedRootMeanSquaredError, MeanAbsoluteError
 
 class StandardScaler:
@@ -34,18 +34,38 @@ class StandardScaler:
         scaler.std   = data["std"]
         return scaler
 
+# def compute_adiabatic_flame_temperature(
+#         t0: float, 
+#         p_atm: float, 
+#         phi: float, 
+#         fuel: str, 
+#         oxidizer: str, 
+#         mechanism: str
+#     ) -> float:
+#     """
+#     Computes the adiabatic flame temperature
+#     """
+#     gas    = ct.Solution(mechanism)
+#     gas.TP = t0, p_atm * ct.one_atm
+#     gas.set_equivalence_ratio(
+#         phi      = phi, 
+#         fuel     = fuel, 
+#         oxidizer = oxidizer
+#     )
+#     gas.equilibrate("HP")
+#     return gas.T
+
 def compute_adiabatic_flame_temperature(
-        t0: float, 
-        p_atm: float, 
-        phi: float, 
-        fuel: str, 
+        t0      : float, 
+        p_atm   : float, 
+        phi     : float, 
+        fuel    : str, 
         oxidizer: str, 
-        mechanism: str
+        gas     : ct.Solution
     ) -> float:
     """
     Computes the adiabatic flame temperature
     """
-    gas    = ct.Solution(mechanism)
     gas.TP = t0, p_atm * ct.one_atm
     gas.set_equivalence_ratio(
         phi      = phi, 
@@ -68,10 +88,10 @@ def abs_err(y: float, y_pred: float) -> float:
     return abs(y - y_pred)
 
 def build_loss_curves(
-        n_epochs: int, 
+        n_epochs    : int, 
         train_losses: List[float], 
-        val_losses: List[float], 
-        path: str
+        val_losses  : List[float], 
+        path        : str
     ) -> None:
     """
     Generate plot of the training and validation loss curves
@@ -88,7 +108,7 @@ def build_loss_curves(
     plt.savefig(path)
 
 def compute_metrics(
-        model: nn.Module, 
+        model     : nn.Module, 
         dataloader: DataLoader
     ) -> float:
     """
@@ -113,11 +133,11 @@ def compute_metrics(
     return r2, mse, nrmse, mae
 
 def model_inference(
-        model: nn.Module, 
+        model : nn.Module, 
         scaler: StandardScaler, 
-        t0: float, 
-        p_atm: float, 
-        phi: float,
+        t0    : float, 
+        p_atm : float, 
+        phi   : float,
     ) -> float:
     """
     Predicts the adiabatic flame temperature given t0, p_atm, and phi
