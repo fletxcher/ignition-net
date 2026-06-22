@@ -78,7 +78,7 @@ The green shaded region shows the speedup margin between the two methods across 
 
 ### Prediction Error
 
-The surrogate achieves a **median absolute error of 21.73 K** against Cantera ground truth across the full parameter sweep.
+The surrogate achieves a **median absolute error of 19.00 K** against Cantera ground truth across the full parameter sweep.
 
 ![Prediction Error](error.png)
 
